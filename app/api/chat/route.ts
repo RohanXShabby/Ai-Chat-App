@@ -26,10 +26,13 @@ export async function POST(req: Request) {
         return NextResponse.json({
             content: completion.choices[0].message.content,
         });
-        
+
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
+    } catch (err) {
         console.error("Error generating chat completion:", err);
-        return NextResponse.json({ error: err.message }, { status: 500 });
+        return NextResponse.json(
+            { error: err instanceof Error ? err.message : "Unknown error" },
+            { status: 500 }
+        );
     }
 }

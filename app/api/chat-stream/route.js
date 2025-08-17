@@ -42,8 +42,11 @@ export async function POST(req) {
         return new Response(stream, {
             headers: { "Content-Type": "text/plain; charset=utf-8" },
         });
-    } catch (error) {
-        console.error("Streaming error:", error);
-        return new Response("Error while streaming", { status: 500 });
+    }  catch (err) {
+        console.error("Error generating chat completion:", err);
+        return NextResponse.json(
+            { error: err instanceof Error ? err.message : "Unknown error" },
+            { status: 500 }
+        );
     }
 }
