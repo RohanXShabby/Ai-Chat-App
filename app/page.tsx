@@ -103,7 +103,7 @@ export default function Home() {
           <button
             onClick={handleStreamChat}
             disabled={loading}
-            className="flex-1 px-6 py-3 bg-green-600 hover:bg-green-500 disabled:opacity-50 rounded-xl text-white font-semibold shadow-md transition"
+            className="flex-1 whitespace-nowrap px-6 py-3 bg-green-600 hover:bg-green-500 disabled:opacity-50 rounded-xl text-white font-semibold shadow-md transition"
           >
             {loading ? 'Loading...' : 'Send Message'}
           </button>
