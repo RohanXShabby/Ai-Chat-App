@@ -4,8 +4,8 @@ const openai = new OpenAI({
     baseURL: "https://openrouter.ai/api/v1",
     apiKey: process.env.OPENROUTER_API_KEY,
     defaultHeaders: {
-        "HTTP-Referer": "https://your-site-url.com", // optional
-        "X-Title": "My Portfolio Chatbot",           // optional
+        "HTTP-Referer": "https://your-site-url.com",
+        "X-Title": "My Portfolio Chatbot",           
     },
 });
 

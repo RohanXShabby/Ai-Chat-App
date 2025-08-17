@@ -1,11 +1,6 @@
 'use client'
 import { useState } from "react";
 
-interface Message {
-  role: string;
-  content: string;
-}
-
 interface ChatResponse {
   content: string;
 }
@@ -13,11 +8,11 @@ interface ChatResponse {
 export default function Home() {
   const [messages, setMessages] = useState<string>("");
   const [response, setResponse] = useState<ChatResponse | null>(null);
-  const [stream, setStream] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [streamResponse, setStreamResponse] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
+  // 🔹 Normal chat request
   const handleChat = async (): Promise<void> => {
     setLoading(true);
     setResponse(null);
@@ -34,16 +29,17 @@ export default function Home() {
 
       const data: ChatResponse = await res.json();
       setResponse(data);
-    } catch (err) {
-      console.error('Error:', err);
-      setError('Failed to fetch response from the server.');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Unknown error";
+      console.error("Error:", message);
+      setError("Failed to fetch response from the server.");
     } finally {
       setLoading(false);
     }
   };
 
+  // 🔹 Streaming chat request
   const handleStreamChat = async (): Promise<void> => {
-    setStream(true);
     setStreamResponse("");
     setLoading(true);
 
@@ -65,11 +61,11 @@ export default function Home() {
         const chunk = decoder.decode(value, { stream: true });
         setStreamResponse((prev) => prev + chunk);
       }
-    } catch (error) {
-      console.error("Stream error:", error);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Unknown error";
+      console.error("Stream error:", message);
       setError("Failed to stream response");
     } finally {
-      setStream(false);
       setLoading(false);
     }
   };
@@ -105,7 +101,7 @@ export default function Home() {
             disabled={loading}
             className="flex-1 whitespace-nowrap px-6 py-3 bg-green-600 hover:bg-green-500 disabled:opacity-50 rounded-xl text-white font-semibold shadow-md transition"
           >
-            {loading ? 'Loading...' : 'Send Message'}
+            {loading ? 'Loading...' : 'Send Stream'}
           </button>
         </div>
 

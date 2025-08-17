@@ -15,10 +15,10 @@ export async function POST(req: Request) {
         const { messages } = await req.json();
 
         const completion = await openai.chat.completions.create({
-            model: "openai/gpt-4o", // ✅ valid model
+            model: "openai/gpt-4o",
             messages: [
                 { role: "system", content: "You are a helpful assistant." },
-                { role: "user", content: messages }, // your textarea input
+                { role: "user", content: messages },
             ],
             max_tokens: 1000,
         });
@@ -26,6 +26,8 @@ export async function POST(req: Request) {
         return NextResponse.json({
             content: completion.choices[0].message.content,
         });
+        
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
         console.error("Error generating chat completion:", err);
         return NextResponse.json({ error: err.message }, { status: 500 });
